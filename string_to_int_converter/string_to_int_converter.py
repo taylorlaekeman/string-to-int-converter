@@ -1,23 +1,29 @@
 class StringToIntConverter():
     def __init__(self, string_to_convert):
-        self.string_to_convert = string_to_convert
+        self.string_wrapper = StringWrapper(string_to_convert)
+        self.converted_int = 0
 
     def convert(self):
-        converted_int = 0
-        while not self.string_is_empty():
-            char, self.string_to_convert = pop_first_char(self.string_to_convert)
-            converted_int *= 10
-            converted_int += cast_char_to_int(char)
-        return converted_int
+        while not self.string_wrapper.is_empty():
+            char = self.string_wrapper.pop()
+            self.add_digit(char)
+        return self.converted_int
 
-    def string_is_empty(self):
-        empty_string_formats = ["", None]
-        return self.string_to_convert in empty_string_formats
+    def add_digit(self, char):
+        self.converted_int *= 10
+        self.converted_int += cast_char_to_int(char)
 
-def pop_first_char(word):
-    char = word[0]
-    shortened_word = word[1:]
-    return char, shortened_word
+class StringWrapper():
+    def __init__(self, string):
+        self.string = string
+
+    def pop(self):
+        char = self.string[0]
+        self.string = self.string[1:]
+        return char
+
+    def is_empty(self):
+        return self.string == "" or self.string == None
 
 def cast_char_to_int(char):
     if char == '1':
